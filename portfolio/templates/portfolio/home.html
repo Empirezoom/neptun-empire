@@ -1,0 +1,217 @@
+{% extends 'portfolio/base.html' %} {% block title %}NeptuneShotIt | Capture the
+Moment{% endblock %} {% block content %}
+<section
+  class="relative h-[85vh] md:h-[90vh] flex items-center justify-center overflow-hidden"
+>
+  <!-- Hero Background -->
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent z-10"
+  ></div>
+  <div
+    class="absolute inset-0 bg-cover bg-center scale-105"
+    style="
+      background-image: url(&quot;https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80&quot;);
+    "
+  ></div>
+
+  <div
+    class="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 w-full text-center md:text-left"
+  >
+    <h1
+      class="text-4xl sm:text-6xl md:text-8xl font-serif font-bold mb-6 tracking-tight leading-[1.1] animate-fade-in-up"
+    >
+      Capturing the <br />
+      <span class="text-gray-400 italic font-light">Essence of Life</span>
+    </h1>
+    <p
+      class="text-base md:text-xl text-gray-300 max-w-xl mb-10 leading-relaxed font-light mx-auto md:mx-0"
+    >
+      Professional photography for weddings, portraits, and events. Turning your
+      precious moments into timeless art.
+    </p>
+    <div
+      class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 sm:gap-6"
+    >
+      <a
+        href="{% url 'portfolio:gallery' %}"
+        class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-full font-bold hover:bg-gray-200 transition-all duration-300 text-center uppercase tracking-widest text-[10px]"
+      >
+        View Gallery
+      </a>
+      <a
+        href="{% url 'portfolio:contact' %}"
+        class="w-full sm:w-auto border border-white/20 text-white px-10 py-4 rounded-full font-bold hover:bg-white/10 transition-all duration-300 text-center uppercase tracking-widest text-[10px] backdrop-blur-md"
+      >
+        Book a Session
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="py-24 md:py-32 bg-zinc-950">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div
+      class="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-8 reveal"
+    >
+      <div class="max-w-2xl text-center md:text-left">
+        <span
+          class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] font-black mb-4 block"
+          >Our Expertise</span
+        >
+        <h2
+          class="text-3xl md:text-6xl font-serif font-bold mb-6 tracking-tight"
+        >
+          Explore by Category
+        </h2>
+        <p class="text-zinc-400 text-base md:text-lg font-light">
+          We specialize in various photography styles to capture every unique
+          story.
+        </p>
+      </div>
+      <a
+        href="{% url 'portfolio:gallery' %}"
+        class="mx-auto md:mx-0 text-white hover:text-gray-400 transition-colors border-b border-white/10 pb-2 flex items-center gap-3 group text-[11px] uppercase tracking-widest font-bold"
+      >
+        View All Categories
+        <svg
+          class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+      {% for category in categories %}
+      <a
+        href="{% url 'portfolio:gallery_by_category' category.slug %}"
+        class="group relative aspect-[4/5] overflow-hidden rounded-[2.5rem] premium-card reveal"
+        style="transition-delay: {{ forloop.counter0|add:1 }}00ms;"
+      >
+        {% if category.photos.first %}
+        <img
+          src="{{ category.photos.first.image.url }}"
+          alt="{{ category.name }}"
+          class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        />
+        {% else %}
+        <div
+          class="w-full h-full flex items-center justify-center text-zinc-800"
+        >
+          <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+        {% endif %}
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"
+        ></div>
+        <div class="absolute bottom-0 left-0 p-8 md:p-10 w-full">
+          <h3
+            class="text-2xl md:text-3xl font-serif font-bold mb-2 tracking-tight"
+          >
+            {{ category.name }}
+          </h3>
+          <div class="flex items-center justify-between">
+            <p
+              class="text-gray-400 text-[10px] uppercase tracking-[0.2em] font-bold"
+            >
+              {{ category.photos.count }} Captures
+            </p>
+            <span
+              class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0"
+            >
+              <svg
+                class="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                ></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+      {% empty %}
+      <div
+        class="col-span-full py-20 text-center border-2 border-dashed border-zinc-900 rounded-3xl"
+      >
+        <p class="text-zinc-600 font-medium">New collections coming soon.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-24 md:py-32 bg-black overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-16 md:mb-24 reveal">
+      <span
+        class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] font-black mb-4 block"
+        >Recent Highlights</span
+      >
+      <h2 class="text-3xl md:text-6xl font-serif font-bold tracking-tight">
+        Lately in the Studio
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+      {% for photo in recent_photos %}
+      <div
+        class="aspect-square overflow-hidden rounded-[2rem] premium-card reveal"
+        style="transition-delay: {{ forloop.counter0|add:1 }}00ms;"
+      >
+        <img
+          src="{{ photo.image.url }}"
+          alt="{{ photo.title }}"
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 transform group-hover:scale-110"
+        />
+        <div
+          class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+        ></div>
+      </div>
+      {% empty %}
+      <div
+        class="col-span-full py-20 text-center text-zinc-700 font-medium italic"
+      >
+        The gallery is currently being curated.
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>
+{% endblock %}

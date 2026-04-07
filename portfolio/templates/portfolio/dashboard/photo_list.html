@@ -1,0 +1,106 @@
+{% extends 'portfolio/dashboard/base.html' %} {% block header_title %}Photos
+Management{% endblock %} {% block content %}
+<div class="flex justify-end mb-12">
+  <a
+    href="{% url 'portfolio:photo_create' %}"
+    class="bg-white text-black px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition-all text-sm uppercase tracking-widest shadow-lg shadow-white/10"
+  >
+    Add New Photo
+  </a>
+</div>
+
+<div
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+>
+  {% for photo in photos %}
+  <div
+    class="bg-zinc-900 border border-white/5 overflow-hidden rounded-3xl shadow-2xl relative group"
+  >
+    <div class="aspect-square bg-zinc-800 overflow-hidden relative">
+      <img
+        src="{{ photo.image.url }}"
+        alt="{{ photo.title }}"
+        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+      />
+      <!-- Desktop Hover Overlay -->
+      <div
+        class="hidden md:flex absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all flex-col justify-end p-6"
+      >
+        <div class="flex items-center gap-4">
+          <a
+            href="{% url 'portfolio:photo_update' photo.pk %}"
+            class="text-[10px] text-white hover:text-gray-300 transition-all uppercase tracking-widest font-black"
+            >Edit</a
+          >
+          <a
+            href="{% url 'portfolio:photo_delete' photo.pk %}"
+            class="text-[10px] text-red-500 hover:text-red-400 transition-all uppercase tracking-widest font-black"
+            >Delete</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="p-6">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-lg font-bold text-white truncate pr-4">
+          {{ photo.title }}
+        </h3>
+        <!-- Mobile Actions -->
+        <div class="md:hidden flex items-center gap-4">
+          <a
+            href="{% url 'portfolio:photo_update' photo.pk %}"
+            class="text-zinc-500 hover:text-white transition-all"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="{% url 'portfolio:photo_delete' photo.pk %}"
+            class="text-red-900 hover:text-red-500 transition-all"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <p
+        class="text-zinc-500 text-[10px] uppercase tracking-widest font-black mb-4"
+      >
+        {{ photo.category.name }}
+      </p>
+      <p class="text-zinc-600 text-xs line-clamp-2 font-medium">
+        {{ photo.description }}
+      </p>
+    </div>
+  </div>
+  {% empty %}
+  <div
+    class="col-span-full py-20 text-center border-2 border-dashed border-zinc-900 rounded-3xl"
+  >
+    <p class="text-zinc-600">No photos found.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'portfolio/base.html' %} {% block title %}NeptuneShotIt | Contact
+Us{% endblock %} {% block content %}
+<section class="py-24 md:py-32 bg-zinc-950 relative overflow-hidden">
+  <!-- Background Decor -->
+  <div
+    class="absolute top-0 right-0 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-3xl -mr-64 -mt-64"
+  ></div>
+  <div
+    class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-3xl -ml-64 -mb-64"
+  ></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+      <div class="max-w-2xl reveal">
+        <span
+          class="text-zinc-500 uppercase tracking-[0.4em] text-[10px] font-black mb-6 block"
+          >Contact & Inquiries</span
+        >
+        <h1
+          class="text-5xl md:text-8xl font-serif font-bold mb-10 leading-[1.05] tracking-tighter"
+        >
+          Let's frame your <br />
+          <span class="text-zinc-500 italic font-light">vision</span> together.
+        </h1>
+        <p
+          class="text-zinc-400 text-lg md:text-xl mb-16 leading-relaxed font-light"
+        >
+          Whether it's a grand wedding or a quiet portrait, we're here to
+          capture the essence of your unique story.
+        </p>
+
+        <div class="space-y-10">
+          <div class="flex items-center gap-8 group">
+            <div
+              class="w-16 h-16 glass rounded-3xl flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500 transform group-hover:rotate-6"
+            >
+              <i class="fas fa-envelope text-xl"></i>
+            </div>
+            <div>
+              <p
+                class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black mb-2"
+              >
+                Email Us
+              </p>
+              <p class="text-xl font-medium text-white tracking-tight">
+                hello@neptuneshotit.com.ng
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-8 group">
+            <div
+              class="w-16 h-16 glass rounded-3xl flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500 transform group-hover:-rotate-6"
+            >
+              <i class="fas fa-phone-alt text-xl"></i>
+            </div>
+            <div>
+              <p
+                class="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-black mb-2"
+              >
+                Call Us
+              </p>
+              <p class="text-xl font-medium text-white tracking-tight">
+                +234 (0) 123 456 7890
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 300ms">
+        <div class="glass p-10 md:p-16 rounded-[3rem] shadow-2xl relative">
+          <!-- Form Header -->
+          <div class="mb-12">
+            <h2 class="text-2xl font-serif font-bold text-white mb-2">
+              Send an Inquiry
+            </h2>
+            <p class="text-zinc-500 text-sm font-light">
+              Expect a response within 24 hours.
+            </p>
+          </div>
+
+          {% if messages %}
+          <div class="mb-10 space-y-4">
+            {% for message in messages %}
+            <div
+              class="p-5 rounded-2xl bg-white text-black text-xs font-bold uppercase tracking-widest text-center shadow-xl"
+            >
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <form method="POST" class="space-y-8">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div class="group">
+                <div class="relative">
+                  <label class="sr-only" for="id_name">Name</label>
+                  {{ form.name }}
+                  <div
+                    class="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-focus-within:w-full transition-all duration-700"
+                  ></div>
+                </div>
+              </div>
+              <div class="group">
+                <div class="relative">
+                  <label class="sr-only" for="id_email">Email</label>
+                  {{ form.email }}
+                  <div
+                    class="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-focus-within:w-full transition-all duration-700"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <div class="relative">
+                <label class="sr-only" for="id_subject">Subject</label>
+                {{ form.subject }}
+                <div
+                  class="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-focus-within:w-full transition-all duration-700"
+                ></div>
+              </div>
+            </div>
+            <div class="group">
+              <div class="relative">
+                <label class="sr-only" for="id_message">Message</label>
+                {{ form.message }}
+                <div
+                  class="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-focus-within:w-full transition-all duration-700"
+                ></div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-white text-black px-10 py-6 rounded-2xl font-black hover:bg-zinc-200 transition-all duration-500 uppercase tracking-[0.3em] text-[11px] shadow-2xl shadow-white/5 flex items-center justify-center gap-4 group"
+            >
+              <span>Send Message</span>
+              <i
+                class="fas fa-paper-plane transform group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform duration-500"
+              ></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

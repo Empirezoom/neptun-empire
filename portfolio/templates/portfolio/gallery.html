@@ -1,0 +1,150 @@
+{% extends 'portfolio/base.html' %} {% block title %}NeptuneShotIt | Gallery -
+{{ category.name|default:"All Work" }}{% endblock %} {% block content %}
+<section class="py-16 md:py-24 bg-zinc-950">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div
+      class="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-20 gap-8"
+    >
+      <div class="max-w-2xl text-center md:text-left">
+        <span
+          class="text-gray-500 uppercase tracking-[0.3em] text-[10px] font-black mb-4 block"
+          >Our Portfolio</span
+        >
+        <h1
+          class="text-4xl md:text-7xl font-serif font-bold mb-6 tracking-tight"
+        >
+          {% if category %}{{ category.name }} <span class="text-zinc-500 italic font-light">Gallery</span>{% else %}Explore <span class="text-zinc-500 italic font-light">All Work</span>{% endif %}
+        </h1>
+        <p
+          class="text-gray-400 text-base md:text-lg font-light leading-relaxed"
+        >
+          A curated collection of our favorite moments and projects.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filter Navigation (Enhanced Mobile Scroll) -->
+    <div class="relative -mx-6 px-6 md:mx-0 md:px-0 group/scroll">
+      <!-- Gradient Masks to indicate more content -->
+      <div
+        class="absolute left-6 top-0 bottom-4 w-12 bg-gradient-to-r from-zinc-950 to-transparent z-10 pointer-events-none opacity-0 md:hidden group-hover/scroll:opacity-100 transition-opacity"
+      ></div>
+      <div
+        class="absolute right-6 top-0 bottom-4 w-12 bg-gradient-to-l from-zinc-950 to-transparent z-10 pointer-events-none md:hidden transition-opacity"
+      ></div>
+
+      <div
+        class="flex items-center gap-3 mb-12 md:mb-16 pb-6 border-b border-white/5 overflow-x-auto whitespace-nowrap scroll-container"
+      >
+        <a
+          href="{% url 'portfolio:gallery' %}"
+          class="px-6 py-2.5 rounded-full border {% if not category %}bg-white text-black border-white{% else %}border-white/10 text-gray-500 hover:border-white/30 hover:text-white{% endif %} transition-all uppercase tracking-widest text-[10px] font-bold"
+        >
+          All Work
+        </a>
+        {% for cat in categories %}
+        <a
+          href="{% url 'portfolio:gallery_by_category' cat.slug %}"
+          class="px-6 py-2.5 rounded-full border {% if category.id == cat.id %}bg-white text-black border-white{% else %}border-white/10 text-gray-500 hover:border-white/30 hover:text-white{% endif %} transition-all uppercase tracking-widest text-[10px] font-bold"
+        >
+          {{ cat.name }}
+        </a>
+        {% endfor %}
+      </div>
+
+      <!-- Scroll Indicator Label (Mobile Only) -->
+      <div
+        class="md:hidden flex items-center justify-center gap-2 -mt-10 mb-8 opacity-40"
+      >
+        <span class="w-8 h-[1px] bg-zinc-800"></span>
+        <span
+          class="text-[8px] uppercase tracking-[0.3em] font-bold text-zinc-500"
+          >Scroll Categories</span
+        >
+        <span class="w-8 h-[1px] bg-zinc-800"></span>
+      </div>
+    </div>
+
+    <!-- Photos Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+      {% for photo in photos %}
+      <div
+        class="group relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl transition-all duration-700"
+      >
+        <img
+          src="{{ photo.image.url }}"
+          alt="{{ photo.title }}"
+          class="w-full aspect-[4/5] object-cover transition-transform duration-1000 group-hover:scale-110"
+        />
+
+        <!-- Mobile Label (Visible by default on small screens) -->
+        <div
+          class="md:hidden absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent"
+        >
+          <h3 class="text-lg font-serif font-bold text-white">
+            {{ photo.title }}
+          </h3>
+          <p class="text-gray-400 text-[10px] uppercase tracking-widest">
+            {{ photo.category.name }}
+          </p>
+        </div>
+
+        <!-- Desktop Overlay -->
+        <div
+          class="hidden md:flex absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-10"
+        >
+          <h3 class="text-3xl font-serif font-bold mb-3 text-white">
+            {{ photo.title }}
+          </h3>
+          <p
+            class="text-gray-400 text-sm mb-6 line-clamp-2 font-light leading-relaxed"
+          >
+            {{ photo.description }}
+          </p>
+          <span
+            class="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black"
+            >{{ photo.category.name }}</span
+          >
+        </div>
+      </div>
+      {% empty %}
+      <div
+        class="col-span-full py-32 text-center border-2 border-dashed border-zinc-900 rounded-[2rem]"
+      >
+        <p class="text-zinc-700 text-lg font-light italic">
+          This collection is currently being prepared.
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .scroll-container::-webkit-scrollbar {
+    height: 2px;
+  }
+  .scroll-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    margin-bottom: 2px;
+  }
+  .scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+  .scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Show scrollbar only on mobile */
+  @media (min-width: 768px) {
+    .scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .scroll-container {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
+</style>
+{% endblock %}

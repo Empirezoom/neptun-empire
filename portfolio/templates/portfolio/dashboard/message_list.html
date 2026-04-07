@@ -1,0 +1,101 @@
+{% extends 'portfolio/dashboard/base.html' %} 
+
+{% block header_title %}Messages{% endblock %} 
+
+{% block content %}
+<div
+  class="bg-zinc-900 border border-white/5 rounded-[2rem] shadow-2xl overflow-hidden"
+>
+  <div class="overflow-x-auto scrollbar-hide">
+    <table class="w-full text-left min-w-[600px] lg:min-w-0">
+      <thead>
+        <tr class="border-b border-white/5 bg-white/[0.02]">
+          <th
+            class="p-6 font-black text-zinc-500 uppercase tracking-[0.2em] text-[10px]"
+          >
+            Sender
+          </th>
+          <th
+            class="p-6 font-black text-zinc-500 uppercase tracking-[0.2em] text-[10px]"
+          >
+            Subject
+          </th>
+          <th
+            class="p-6 font-black text-zinc-500 uppercase tracking-[0.2em] text-[10px] hidden md:table-cell"
+          >
+            Date
+          </th>
+          <th
+            class="p-6 font-black text-zinc-500 uppercase tracking-[0.2em] text-[10px] text-right"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-white/5">
+        {% for msg in messages_list %}
+        <tr
+          class="group hover:bg-white/[0.03] transition-all {% if not msg.is_read %}bg-white/[0.01]{% endif %}"
+        >
+          <td class="p-6">
+            <div class="flex items-center gap-4">
+              {% if not msg.is_read %}
+              <span
+                class="w-2 h-2 bg-white rounded-full animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+              ></span>
+              {% endif %}
+              <div>
+                <p
+                  class="font-bold text-sm {% if not msg.is_read %}text-white{% else %}text-zinc-500{% endif %}"
+                >
+                  {{ msg.name }}
+                </p>
+                <p
+                  class="text-[10px] text-zinc-600 font-medium truncate max-w-[120px]"
+                >
+                  {{ msg.email }}
+                </p>
+              </div>
+            </div>
+          </td>
+          <td class="p-6">
+            <p
+              class="text-xs {% if not msg.is_read %}text-zinc-300{% else %}text-zinc-600{% endif %} truncate max-w-[150px] lg:max-w-xs"
+            >
+              {{ msg.subject }}
+            </p>
+          </td>
+          <td
+            class="p-6 text-[10px] text-zinc-600 font-bold uppercase tracking-widest hidden md:table-cell"
+          >
+            {{ msg.created_at|date:"M d, Y" }}
+          </td>
+          <td class="p-6 text-right">
+            <div class="flex items-center justify-end gap-4">
+              <a
+                href="{% url 'portfolio:message_detail' msg.pk %}"
+                class="text-[10px] uppercase tracking-widest font-black text-zinc-500 hover:text-white transition-all"
+                >View</a
+              >
+              <a
+                href="{% url 'portfolio:message_delete' msg.pk %}"
+                class="text-[10px] uppercase tracking-widest font-black text-red-900 hover:text-red-500 transition-all"
+                >Delete</a
+              >
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="p-24 text-center">
+            <p class="text-zinc-700 text-sm font-medium italic">
+              No messages in your inbox.
+            </p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

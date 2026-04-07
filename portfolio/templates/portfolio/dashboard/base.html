@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeptuneShotIt | Admin Dashboard</title>
+    {% load static %}
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'portfolio/images/favicon.png' %}"
+    />
+    <!-- Font Awesome for Premium Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #050505;
+        color: #f3f4f6;
+        overflow-x: hidden;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div class="flex flex-col lg:flex-row min-h-screen">
+      <!-- Sidebar Toggle (Mobile Only) -->
+      <div
+        class="lg:hidden flex items-center justify-between p-4 bg-zinc-950 border-b border-white/5 sticky top-0 z-30"
+      >
+        <a
+          href="{% url 'portfolio:dashboard' %}"
+          class="flex items-center gap-2"
+        >
+          <img
+            src="{% static 'portfolio/images/logo.png' %}"
+            alt="Logo"
+            class="w-6 h-6"
+          />
+          <span class="text-lg font-bold tracking-tighter text-white uppercase"
+            >Dashboard</span
+          >
+        </a>
+        <button id="sidebar-toggle" class="p-2 text-white">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="fixed inset-y-0 left-0 w-72 bg-zinc-950 border-r border-white/5 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out z-40 flex flex-col"
+      >
+        <div class="p-8 hidden lg:block">
+          <a
+            href="{% url 'portfolio:dashboard' %}"
+            class="flex items-center gap-3"
+          >
+            <img
+              src="{% static 'portfolio/images/logo.png' %}"
+              alt="Logo"
+              class="w-8 h-8"
+            />
+            <span
+              class="text-xl font-bold tracking-tighter text-white uppercase"
+            >
+              NEPTUNE<span class="text-zinc-600">ADMIN</span>
+            </span>
+          </a>
+        </div>
+        <nav class="mt-4 lg:mt-8 px-4 flex-1 space-y-2">
+          <a
+            href="{% url 'portfolio:dashboard' %}"
+            class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition-all {% if request.resolver_match.url_name == 'dashboard' %}bg-white/10 text-white font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)]{% else %}text-zinc-500{% endif %}"
+          >
+            <i class="fas fa-th-large text-xs"></i>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+              >Overview</span
+            >
+          </a>
+          <a
+            href="{% url 'portfolio:dashboard_categories' %}"
+            class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition-all {% if 'category' in request.resolver_match.url_name %}bg-white/10 text-white font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)]{% else %}text-zinc-500{% endif %}"
+          >
+            <i class="fas fa-folder text-xs"></i>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+              >Categories</span
+            >
+          </a>
+          <a
+            href="{% url 'portfolio:dashboard_photos' %}"
+            class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition-all {% if 'photo' in request.resolver_match.url_name %}bg-white/10 text-white font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)]{% else %}text-zinc-500{% endif %}"
+          >
+            <i class="fas fa-camera text-xs"></i>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+              >Photos</span
+            >
+          </a>
+          <a
+            href="{% url 'portfolio:dashboard_messages' %}"
+            class="flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 transition-all {% if 'message' in request.resolver_match.url_name %}bg-white/10 text-white font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)]{% else %}text-zinc-500{% endif %}"
+          >
+            <i class="fas fa-envelope text-xs"></i>
+            <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+              >Messages</span
+            >
+          </a>
+          <div class="pt-8 mt-8 border-t border-white/5">
+            <a
+              href="{% url 'portfolio:home' %}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit NeptuneShotIt website"
+              class="flex items-center gap-3 px-5 py-4 text-zinc-500 hover:text-white transition-all"
+            >
+              <i class="fas fa-external-link-alt text-xs"></i>
+              <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+                >Visit Site</span
+              >
+            </a>
+            <form
+              action="{% url 'admin:logout' %}"
+              method="post"
+              class="px-5 py-4"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="flex items-center gap-3 text-red-900 hover:text-red-500 transition-all w-full text-left cursor-pointer"
+              >
+                <i class="fas fa-sign-out-alt text-xs"></i>
+                <span class="text-[10px] uppercase tracking-[0.2em] font-black"
+                  >Logout</span
+                >
+              </button>
+            </form>
+          </div>
+        </nav>
+
+        <!-- User Info Sidebar Bottom -->
+        <div class="p-6 border-t border-white/5 bg-black/20">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white font-bold uppercase text-xs"
+            >
+              {{ request.user.username|slice:":1" }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-bold text-white truncate">
+                {{ request.user.username }}
+              </p>
+              <p
+                class="text-[9px] text-zinc-600 uppercase tracking-widest font-black"
+              >
+                Manager
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Sidebar Overlay (Mobile Only) -->
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"
+      ></div>
+
+      <!-- Main Content -->
+      <main class="flex-1 w-full p-6 lg:p-12 overflow-x-hidden">
+        <header
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6"
+        >
+          <div>
+            <h1
+              class="text-2xl lg:text-3xl font-bold text-white tracking-tight"
+            >
+              {% block header_title %}Admin Overview{% endblock %}
+            </h1>
+            <p
+              class="text-zinc-500 text-xs uppercase tracking-widest font-bold mt-1"
+            >
+              NeptuneShotIt Control Center
+            </p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span
+              class="text-[10px] bg-white/5 text-zinc-400 px-4 py-2 rounded-full uppercase tracking-widest font-black border border-white/5"
+            >
+              {{ today|date:"l, M d"|default:"Active Session" }}
+            </span>
+          </div>
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <script>
+      const sidebar = document.getElementById("sidebar");
+      const sidebarToggle = document.getElementById("sidebar-toggle");
+      const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+      function toggleSidebar() {
+        const isVisible = sidebar.classList.contains("translate-x-0");
+        if (isVisible) {
+          sidebar.classList.remove("translate-x-0");
+          sidebar.classList.add("-translate-x-full");
+          sidebarOverlay.classList.add("hidden");
+          document.body.style.overflow = "auto";
+        } else {
+          sidebar.classList.remove("-translate-x-full");
+          sidebar.classList.add("translate-x-0");
+          sidebarOverlay.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+        }
+      }
+
+      sidebarToggle?.addEventListener("click", toggleSidebar);
+      sidebarOverlay?.addEventListener("click", toggleSidebar);
+
+      // Auto-close sidebar on link click (mobile)
+      document.querySelectorAll("#sidebar nav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth < 1024) toggleSidebar();
+        });
+      });
+    </script>
+  </body>
+</html>

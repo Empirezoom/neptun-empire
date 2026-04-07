@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NeptuneShotIt offers premium photography services for weddings, portraits, and events with cinematic styling and professional service."
+    />
+    <meta name="theme-color" content="#050505" />
+    <meta
+      property="og:title"
+      content="NeptuneShotIt | Premium Photography Services"
+    />
+    <meta
+      property="og:description"
+      content="Capture your most precious moments with NeptuneShotIt, a luxury photography studio delivering stunning visuals and memorable experiences."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="{% static 'portfolio/images/logo.png' %}"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{% block title %}NeptuneShotIt | Photographer{% endblock %}</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'portfolio/images/favicon.png' %}"
+    />
+    <!-- Font Awesome for Premium Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap");
+
+      :root {
+        --font-serif: "Playfair Display", serif;
+        --font-sans: "Inter", sans-serif;
+        --accent: #ffffff;
+        --glass: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background-color: #050505;
+        color: #e5e7eb;
+        overflow-x: hidden;
+      }
+
+      .glass {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+      }
+
+      .premium-card {
+        background: #0a0a0a;
+        border: 1px solid var(--glass-border);
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .premium-card:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-8px);
+        box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      .nav-link {
+        position: relative;
+        @apply text-zinc-400 hover:text-white transition-colors duration-500;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: white;
+        transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Reveal Animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #050505;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #222;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <header
+      class="fixed top-0 left-0 right-0 z-[100] glass border-b border-white/5 transition-all duration-500"
+      id="main-header"
+    >
+      <nav
+        class="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-20 md:h-24 relative z-[110]"
+      >
+        <!-- Brand Logo -->
+        <a
+          href="{% url 'portfolio:home' %}"
+          class="flex items-center gap-3 group"
+        >
+          <div
+            class="relative w-10 h-10 overflow-hidden rounded-full border border-white/10 group-hover:border-white/30 transition-all duration-700"
+          >
+            <img
+              src="{% static 'portfolio/images/logo.png' %}"
+              alt="Logo"
+              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+            />
+          </div>
+          <span
+            class="text-lg md:text-xl font-serif font-bold tracking-tighter text-white"
+          >
+            NEPTUNE<span class="text-zinc-500">SHOTIT</span>
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div
+          class="hidden md:flex items-center space-x-10 text-[11px] uppercase tracking-[0.3em] font-bold"
+        >
+          <a
+            href="{% url 'portfolio:home' %}"
+            class="nav-link{% if request.resolver_match.url_name == 'home' %} text-white{% endif %}"
+            aria-current="{% if request.resolver_match.url_name == 'home' %}page{% endif %}"
+          >
+            Home
+          </a>
+          <a
+            href="{% url 'portfolio:gallery' %}"
+            class="nav-link{% if 'gallery' in request.resolver_match.url_name %} text-white{% endif %}"
+            aria-current="{% if 'gallery' in request.resolver_match.url_name %}page{% endif %}"
+          >
+            Gallery
+          </a>
+          <a
+            href="{% url 'portfolio:contact' %}"
+            class="nav-link{% if request.resolver_match.url_name == 'contact' %} text-white{% endif %}"
+            aria-current="{% if request.resolver_match.url_name == 'contact' %}page{% endif %}"
+          >
+            Contact
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          class="md:hidden text-white p-2 -mr-2 focus:outline-none relative h-10 w-10 z-[120]"
+          id="mobile-menu-btn"
+          aria-label="Toggle menu"
+        >
+          <div
+            class="absolute inset-0 flex flex-col justify-center items-center gap-[6px]"
+            id="hamburger"
+          >
+            <span
+              class="w-6 h-[1.5px] bg-white transition-all duration-500 origin-center"
+              id="ham-top"
+            ></span>
+            <span
+              class="w-6 h-[1.5px] bg-white transition-all duration-500"
+              id="ham-mid"
+            ></span>
+            <span
+              class="w-6 h-[1.5px] bg-white transition-all duration-500 origin-center"
+              id="ham-bot"
+            ></span>
+          </div>
+        </button>
+      </nav>
+
+      <!-- Redesigned Mobile Menu Overlay (Minimalist Luxury Redesign) -->
+      <div
+        id="mobile-menu"
+        class="fixed inset-0 bg-[#050505]/98 backdrop-blur-3xl z-[105] opacity-0 pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.22, 1, 0.36, 1)] flex flex-col"
+      >
+        <!-- Background Decor -->
+        <div
+          class="absolute inset-0 overflow-hidden pointer-events-none opacity-20"
+        >
+          <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/5 rounded-full blur-[120px]"
+          ></div>
+          <div
+            class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/5 rounded-full blur-[120px]"
+          ></div>
+        </div>
+
+        <!-- Content Container -->
+        <div
+          class="flex-1 flex flex-col justify-center px-10 sm:px-16 pt-20 relative z-10"
+        >
+          <div
+            class="mb-16 opacity-0 transform translate-y-4 transition-all duration-1000 delay-[100ms]"
+            id="mobile-nav-header"
+          >
+            <span
+              class="text-[9px] uppercase tracking-[0.8em] text-zinc-700 font-black border-l-2 border-white/10 pl-4"
+              >INDEX</span
+            >
+          </div>
+
+          <nav class="space-y-16">
+            <!-- Home -->
+            <div class="overflow-hidden group">
+              <a
+                href="{% url 'portfolio:home' %}"
+                class="mobile-nav-link block transform translate-y-full transition-transform duration-700 delay-[200ms]"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center gap-6">
+                    <span
+                      class="text-[10px] font-sans font-black tracking-widest text-zinc-800 group-hover:text-white transition-colors"
+                      >01.</span
+                    >
+                    <span
+                      class="text-6xl sm:text-7xl font-serif font-bold text-white group-hover:italic transition-all"
+                      >Home</span
+                    >
+                  </div>
+                  <span
+                    class="text-[9px] uppercase tracking-[0.4em] text-zinc-600 ml-12 group-hover:text-zinc-400 transition-colors"
+                    >Back to Start</span
+                  >
+                </div>
+              </a>
+            </div>
+
+            <!-- Gallery -->
+            <div class="overflow-hidden group">
+              <a
+                href="{% url 'portfolio:gallery' %}"
+                class="mobile-nav-link block transform translate-y-full transition-transform duration-700 delay-[300ms]"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center gap-6">
+                    <span
+                      class="text-[10px] font-sans font-black tracking-widest text-zinc-800 group-hover:text-white transition-colors"
+                      >02.</span
+                    >
+                    <span
+                      class="text-6xl sm:text-7xl font-serif font-bold text-white group-hover:italic transition-all"
+                      >Gallery</span
+                    >
+                  </div>
+                  <span
+                    class="text-[9px] uppercase tracking-[0.4em] text-zinc-600 ml-12 group-hover:text-zinc-400 transition-colors"
+                    >Our Portfolio</span
+                  >
+                </div>
+              </a>
+            </div>
+
+            <!-- Contact -->
+            <div class="overflow-hidden group">
+              <a
+                href="{% url 'portfolio:contact' %}"
+                class="mobile-nav-link block transform translate-y-full transition-transform duration-700 delay-[400ms]"
+              >
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center gap-6">
+                    <span
+                      class="text-[10px] font-sans font-black tracking-widest text-zinc-800 group-hover:text-white transition-colors"
+                      >03.</span
+                    >
+                    <span
+                      class="text-6xl sm:text-7xl font-serif font-bold text-white group-hover:italic transition-all"
+                      >Contact</span
+                    >
+                  </div>
+                  <span
+                    class="text-[9px] uppercase tracking-[0.4em] text-zinc-600 ml-12 group-hover:text-zinc-400 transition-colors"
+                    >Get in Touch</span
+                  >
+                </div>
+              </a>
+            </div>
+          </nav>
+
+          <!-- Socials & Extra Info -->
+          <div
+            class="mt-24 flex items-center justify-between opacity-0 transform translate-y-10 transition-all duration-1000 delay-[500ms]"
+            id="mobile-socials"
+          >
+            <div class="flex gap-8">
+              <a
+                href="https://instagram.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt Instagram"
+                class="text-zinc-600 hover:text-white transition-all transform hover:-translate-y-1"
+                ><i class="fab fa-instagram text-xl"></i
+              ></a>
+              <a
+                href="https://x.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt X"
+                class="text-zinc-600 hover:text-white transition-all transform hover:-translate-y-1"
+                ><i class="fab fa-x-twitter text-xl"></i
+              ></a>
+              <a
+                href="https://facebook.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt Facebook"
+                class="text-zinc-600 hover:text-white transition-all transform hover:-translate-y-1"
+                ><i class="fab fa-facebook-f text-xl"></i
+              ></a>
+            </div>
+            <div class="h-[1px] flex-1 mx-12 bg-white/5"></div>
+            <span
+              class="text-[8px] uppercase tracking-[0.3em] text-zinc-800 font-bold whitespace-nowrap"
+              >LAGOS / NG</span
+            >
+          </div>
+        </div>
+
+        <!-- Bottom Footer (Minimalist) -->
+        <div
+          class="px-10 py-12 opacity-0 transition-all duration-1000 delay-[600ms]"
+          id="mobile-footer"
+        >
+          <div class="flex flex-col gap-10">
+            <div class="flex flex-col gap-3">
+              <div
+                class="flex justify-between items-end border-t border-white/5 pt-10"
+              >
+                <div class="flex flex-col gap-2">
+                  <p
+                    class="text-[9px] uppercase tracking-[0.5em] text-zinc-600 font-bold"
+                  >
+                    © 2026 NeptuneShotIt
+                  </p>
+                  <p
+                    class="text-[8px] uppercase tracking-[0.2em] text-zinc-900"
+                  >
+                    Premium Photography Services
+                  </p>
+                </div>
+
+                {% if user.is_staff %}
+                <a
+                  href="{% url 'portfolio:dashboard' %}"
+                  class="w-12 h-12 rounded-full glass flex items-center justify-center text-zinc-700 hover:text-white hover:border-white/20 transition-all group"
+                >
+                  <i
+                    class="fas fa-lock text-xs group-hover:rotate-12 transition-transform"
+                  ></i>
+                </a>
+                {% endif %}
+              </div>
+
+              <p
+                class="text-[8px] uppercase tracking-[0.2em] text-zinc-500 text-center md:text-left"
+              >
+                Crafted by
+                <a
+                  href="https://empirecodes.com.ng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-zinc-400 hover:text-white transition-colors"
+                  >empirecodes.com.ng</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-20 md:pt-24 min-h-screen">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer
+      class="relative bg-[#030303] border-t border-white/5 pt-32 pb-16 overflow-hidden"
+    >
+      <!-- Subtle Background Glow -->
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 mb-24 items-start text-center md:text-left"
+        >
+          <!-- Brand Column -->
+          <div class="reveal">
+            <a
+              href="{% url 'portfolio:home' %}"
+              class="flex items-center justify-center md:justify-start gap-3 mb-6 group"
+            >
+              <div
+                class="w-12 h-12 rounded-2xl glass flex items-center justify-center group-hover:border-white/40 transition-all duration-700"
+              >
+                <img
+                  src="{% static 'portfolio/images/logo.png' %}"
+                  alt="Logo"
+                  class="w-8 h-8 object-contain"
+                />
+              </div>
+              <h2
+                class="text-2xl font-serif font-bold tracking-tighter text-white"
+              >
+                NEPTUNE<span class="text-zinc-500">SHOTIT</span>
+              </h2>
+            </a>
+            <p
+              class="text-zinc-400 text-lg font-light leading-relaxed max-w-sm mx-auto md:mx-0"
+            >
+              Professional photography service dedicated to capturing your most
+              <span class="text-white italic">precious moments</span>.
+            </p>
+          </div>
+
+          <!-- Navigation Links -->
+          <div
+            class="flex flex-col items-center md:items-start gap-4 reveal"
+            style="transition-delay: 100ms"
+          >
+            <span
+              class="text-[10px] uppercase tracking-[0.4em] text-zinc-600 font-black mb-2"
+              >Explore</span
+            >
+            <a href="{% url 'portfolio:home' %}" class="nav-link text-sm"
+              >Home</a
+            >
+            <a href="{% url 'portfolio:gallery' %}" class="nav-link text-sm"
+              >Gallery</a
+            >
+            <a href="{% url 'portfolio:contact' %}" class="nav-link text-sm"
+              >Contact</a
+            >
+          </div>
+
+          <!-- Socials & Manager -->
+          <div
+            class="flex flex-col items-center md:items-end gap-8 reveal"
+            style="transition-delay: 200ms"
+          >
+            <div class="flex gap-8">
+              <a
+                href="https://instagram.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt Instagram"
+                class="text-zinc-500 hover:text-white transition-all transform hover:-translate-y-1"
+              >
+                <i class="fab fa-instagram text-2xl"></i>
+              </a>
+              <a
+                href="https://x.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt X"
+                class="text-zinc-500 hover:text-white transition-all transform hover:-translate-y-1"
+              >
+                <i class="fab fa-x-twitter text-2xl"></i>
+              </a>
+              <a
+                href="https://facebook.com/neptuneshotit"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="NeptuneShotIt Facebook"
+                class="text-zinc-500 hover:text-white transition-all transform hover:-translate-y-1"
+              >
+                <i class="fab fa-facebook-f text-2xl"></i>
+              </a>
+            </div>
+            {% if user.is_staff %}
+            <a
+              href="{% url 'portfolio:dashboard' %}"
+              class="glass px-6 py-3 rounded-2xl text-[10px] uppercase tracking-widest font-black text-zinc-400 hover:text-white hover:border-white/20 transition-all"
+            >
+              Manager Access
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Bottom Credits -->
+        <div
+          class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 reveal"
+        >
+          <p
+            class="text-zinc-500 text-[11px] uppercase tracking-[0.2em] font-bold"
+          >
+            © 2026 <span class="text-white">NeptuneShotIt</span> • All rights
+            reserved.
+          </p>
+
+          <div class="flex items-center gap-4 group">
+            <span
+              class="w-8 h-[1px] bg-zinc-800 group-hover:w-12 group-hover:bg-zinc-600 transition-all duration-700"
+            ></span>
+            <p
+              class="text-zinc-600 text-[10px] uppercase tracking-[0.3em] font-black"
+            >
+              Crafted by
+              <a
+                href="https://empirecodes.com.ng"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-zinc-400 hover:text-white transition-colors"
+                >empirecodes.com.ng</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Reveal on Scroll
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 150;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      // Trigger once on load
+      reveal();
+
+      const menuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const hamTop = document.getElementById("ham-top");
+      const hamMid = document.getElementById("ham-mid");
+      const hamBot = document.getElementById("ham-bot");
+      const header = document.getElementById("main-header");
+      const mobileSocials = document.getElementById("mobile-socials");
+      const mobileFooter = document.getElementById("mobile-footer");
+      const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+      const mobileNavHeader = document.getElementById("mobile-nav-header");
+
+      let isMenuOpen = false;
+
+      menuBtn.addEventListener("click", () => {
+        isMenuOpen = !isMenuOpen;
+
+        if (isMenuOpen) {
+          // Open Menu
+          mobileMenu.classList.remove("opacity-0", "pointer-events-none");
+          mobileMenu.classList.add("opacity-100", "pointer-events-auto");
+          header.classList.remove("glass");
+          header.classList.add("bg-transparent", "border-transparent");
+
+          // Trigger staggered link animations
+          mobileLinks.forEach((link) => {
+            link.classList.remove("translate-y-full");
+            link.classList.add("translate-y-0");
+          });
+
+          // Show extra elements
+          mobileNavHeader.classList.remove("opacity-0", "translate-y-4");
+          mobileSocials.classList.remove("opacity-0", "translate-y-10");
+          mobileSocials.classList.add("opacity-100", "translate-y-0");
+          mobileFooter.classList.remove("opacity-0");
+          mobileFooter.classList.add("opacity-100");
+
+          // Animate Hamburger to X
+          hamTop.style.transform = "translateY(7.5px) rotate(45deg)";
+          hamMid.style.opacity = "0";
+          hamBot.style.transform = "translateY(-7.5px) rotate(-45deg)";
+
+          document.body.style.overflow = "hidden";
+        } else {
+          // Close Menu
+          mobileMenu.classList.add("opacity-0", "pointer-events-none");
+          mobileMenu.classList.remove("opacity-100", "pointer-events-auto");
+          header.classList.add("glass");
+          header.classList.remove("bg-transparent", "border-transparent");
+
+          // Reset animations
+          mobileLinks.forEach((link) => {
+            link.classList.add("translate-y-full");
+            link.classList.remove("translate-y-0");
+          });
+
+          mobileNavHeader.classList.add("opacity-0", "translate-y-4");
+          mobileSocials.classList.add("opacity-0", "translate-y-10");
+          mobileSocials.classList.remove("opacity-100", "translate-y-0");
+          mobileFooter.classList.add("opacity-0");
+          mobileFooter.classList.remove("opacity-100");
+
+          // Animate X to Hamburger
+          hamTop.style.transform = "translateY(0) rotate(0)";
+          hamMid.style.opacity = "1";
+          hamBot.style.transform = "translateY(0) rotate(0)";
+
+          document.body.style.overflow = "auto";
+        }
+      });
+
+      // Close menu on link click
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          isMenuOpen = false;
+          mobileMenu.classList.add("opacity-0", "pointer-events-none");
+          header.classList.add("glass");
+          hamTop.style.transform = "translateY(0) rotate(0)";
+          hamMid.style.opacity = "1";
+          hamBot.style.transform = "translateY(0) rotate(0)";
+          document.body.style.overflow = "auto";
+
+          // Reset link states immediately
+          mobileLinks.forEach((l) => {
+            l.classList.add("translate-y-full");
+            l.classList.remove("translate-y-0");
+          });
+          mobileNavHeader.classList.add("opacity-0", "translate-y-4");
+          mobileSocials.classList.add("opacity-0", "translate-y-10");
+          mobileFooter.classList.add("opacity-0");
+        });
+      });
+    </script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

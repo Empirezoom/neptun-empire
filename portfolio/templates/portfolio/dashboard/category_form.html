@@ -1,0 +1,57 @@
+{% extends 'portfolio/dashboard/base.html' %} {% block header_title %}{{ title
+}}{% endblock %} {% block content %}
+<div
+  class="max-w-2xl mx-auto bg-zinc-900 border border-white/5 p-8 md:p-12 rounded-[2.5rem] shadow-2xl"
+>
+  <form method="POST" class="space-y-8">
+    {% csrf_token %}
+    <div class="space-y-2">
+      <label
+        class="text-[10px] uppercase tracking-widest text-zinc-500 font-black px-4"
+        >Category Name</label
+      >
+      {{ form.name }} {% if form.name.errors %}
+      <p class="text-red-500 text-xs mt-1">{{ form.name.errors.0 }}</p>
+      {% endif %}
+    </div>
+    <div class="space-y-2">
+      <label
+        class="text-[10px] uppercase tracking-widest text-zinc-500 font-black px-4"
+        >Slug (Auto-generated)</label
+      >
+      {{ form.slug }} {% if form.slug.errors %}
+      <p class="text-red-500 text-xs mt-1">{{ form.slug.errors.0 }}</p>
+      {% endif %}
+    </div>
+    <div class="flex flex-col sm:flex-row items-center gap-6 pt-8">
+      <button
+        type="submit"
+        class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-zinc-200 transition-all shadow-xl shadow-white/5"
+      >
+        Save Category
+      </button>
+      <a
+        href="{% url 'portfolio:dashboard_categories' %}"
+        class="text-zinc-500 hover:text-white transition-all text-[11px] uppercase tracking-widest font-black"
+        >Cancel</a
+      >
+    </div>
+  </form>
+</div>
+
+<script>
+  const nameInput = document.querySelector('input[name="name"]');
+  const slugInput = document.querySelector('input[name="slug"]');
+
+  if (nameInput && slugInput) {
+    nameInput.addEventListener("input", () => {
+      const nameValue = nameInput.value;
+      const slugValue = nameValue
+        .toLowerCase()
+        .replace(/[^\w ]+/g, "")
+        .replace(/ +/g, "-");
+      slugInput.value = slugValue;
+    });
+  }
+</script>
+{% endblock %}
