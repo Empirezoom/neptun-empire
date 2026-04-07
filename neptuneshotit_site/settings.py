@@ -86,20 +86,12 @@ WSGI_APPLICATION = 'neptuneshotit_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import dj_database_url
-
-# Use Render's DATABASE_URL for PostgreSQL, fallback to SQLite locally
-if config('DATABASE_URL', default=None):
-    DATABASES = {
-        'default': dj_database_url.config(default=config('DATABASE_URL'), conn_max_age=600)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
