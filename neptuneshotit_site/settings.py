@@ -27,7 +27,16 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-)5=ju77n*!=cc%a_5c=st
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['neptun-empire.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['neptun-empire.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
+
+# CSRF and Security
+CSRF_TRUSTED_ORIGINS = ['https://neptun-empire.onrender.com', 'https://*.onrender.com']
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 
 
 # Application definition
