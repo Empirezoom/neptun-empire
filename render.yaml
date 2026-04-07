@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: neptun-empire
+    runtime: python3
+    buildCommand: bash build.sh
+    startCommand: gunicorn neptuneshotit_site.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: neptuneshotit_site.settings
+      - key: PYTHON_VERSION
+        value: "3.11"
